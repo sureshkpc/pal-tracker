@@ -1,57 +1,60 @@
 package io.pivotal.pal.tracker;
 
+import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+import javax.swing.*;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
+@RestController
+@RequestMapping("time-entries")
 public class TimeEntryController {
 
-    private TimeEntry TimeEntry;
-    private TimeEntryRepository TimeEntryRepo;
-    private ResponseEntity timeEntryToCreate;
 
-    public io.pivotal.pal.tracker.TimeEntry getTimeEntry() {
-        return TimeEntry;
-    }
-
-    public void setTimeEntry(io.pivotal.pal.tracker.TimeEntry timeEntry) {
-        TimeEntry = timeEntry;
-    }
-
-    public TimeEntryController(io.pivotal.pal.tracker.TimeEntry timeEntry) {
-        TimeEntry = timeEntry;
-    }
-
-    public TimeEntryRepository getTimeEntryRepo() {
-        return TimeEntryRepo;
-    }
-
-    public void setTimeEntryRepo(TimeEntryRepository timeEntryRepo) {
-        TimeEntryRepo = timeEntryRepo;
-    }
+    private TimeEntryRepository timeEntryRepository;
 
     public TimeEntryController(TimeEntryRepository timeEntryRepo) {
-        TimeEntryRepo = timeEntryRepo;
+        timeEntryRepository = timeEntryRepo;
     }
 
-    public ResponseEntity create(io.pivotal.pal.tracker.TimeEntry timeEntryToCreate) {
+    @PostMapping
+    public ResponseEntity<TimeEntry> create(@RequestBody TimeEntry timeEntryToCreate) {
 
-        return null;
+        TimeEntry entry = timeEntryRepository.create(timeEntryToCreate);
+        return new ResponseEntity<>(entry,HttpStatus.CREATED);
+
     }
 
-    public ResponseEntity<io.pivotal.pal.tracker.TimeEntry> read(long timeEntryId) {
-        return null;
+    @GetMapping("{id}")
+    public ResponseEntity<io.pivotal.pal.tracker.TimeEntry> read(@PathVariable long id) {
+        TimeEntry timeEntry = timeEntryRepository.find(id);
+        if(timeEntry== null){
+            return new ResponseEntity<>(timeEntry,HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(timeEntry,HttpStatus.OK);
     }
-
+    @GetMapping
     public ResponseEntity<List<io.pivotal.pal.tracker.TimeEntry>> list() {
-        return null;
+        List<TimeEntry> entry = timeEntryRepository.list();
+        return new ResponseEntity<>(entry,HttpStatus.OK);
     }
-
-    public ResponseEntity update(long timeEntryId, io.pivotal.pal.tracker.TimeEntry expected) {
-        return null;
+    @PutMapping("{timeEntryId}")
+    public ResponseEntity update( @PathVariable Long timeEntryId, @RequestBody  TimeEntry timeEntry) {
+        TimeEntry timeEntry1 = timeEntryRepository.update(timeEntryId,timeEntry);
+        if(timeEntry== null){
+            return new ResponseEntity<>(timeEntry,HttpStatus.NOT_FOUND);
+        }
+        else
+        return new ResponseEntity<>(timeEntry1,HttpStatus.OK);
     }
-
-    public ResponseEntity delete(long timeEntryId) {
-        return null;
+    @DeleteMapping("{timeEntryId}")
+    public ResponseEntity delete(@PathVariable Long timeEntryId) {
+         timeEntryRepository.delete(timeEntryId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

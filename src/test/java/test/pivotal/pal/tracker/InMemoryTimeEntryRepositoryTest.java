@@ -68,7 +68,7 @@ public class InMemoryTimeEntryRepositoryTest {
     public void update() throws Exception {
         InMemoryTimeEntryRepository repo = new InMemoryTimeEntryRepository();
         TimeEntry created = repo.create(new TimeEntry(123L, 456L, LocalDate.parse("2017-01-08"), 8));
-
+        //created.setProjectId(1L);
         TimeEntry updatedEntry = repo.update(
                 created.getId(),
                 new TimeEntry(321L, 654L, LocalDate.parse("2017-01-09"), 5));

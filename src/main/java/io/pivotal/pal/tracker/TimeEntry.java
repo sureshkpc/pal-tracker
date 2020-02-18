@@ -1,6 +1,7 @@
 package io.pivotal.pal.tracker;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 public class TimeEntry {
 
@@ -59,13 +60,52 @@ public class TimeEntry {
 
     }
 
-    public TimeEntry(long projectId, long userId, LocalDate date, int hours) {
+
+
+    public  TimeEntry(long projectId, long userId, LocalDate date, int hours) {
+        TimeEntry TimeEntryObj=new TimeEntry();
         this.projectId = projectId;
         this.userId = userId;
         this.date = date;
         this.hours = hours;
+
     }
 
     public TimeEntry() {
+    }
+
+    @Override
+    public String toString() {
+        return "TimeEntry{" +
+                "id=" + id +
+                ", projectId=" + projectId +
+                ", userId=" + userId +
+                ", date=" + date +
+                ", hours=" + hours +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TimeEntry)) return false;
+
+        TimeEntry timeEntry = (TimeEntry) o;
+
+        if (getId() != timeEntry.getId()) return false;
+        if (getProjectId() != timeEntry.getProjectId()) return false;
+        if (getUserId() != timeEntry.getUserId()) return false;
+        if (getHours() != timeEntry.getHours()) return false;
+        return getDate().equals(timeEntry.getDate());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (getId() ^ (getId() >>> 32));
+        result = 31 * result + (int) (getProjectId() ^ (getProjectId() >>> 32));
+        result = 31 * result + (int) (getUserId() ^ (getUserId() >>> 32));
+        result = 31 * result + getDate().hashCode();
+        result = 31 * result + getHours();
+        return result;
     }
 }

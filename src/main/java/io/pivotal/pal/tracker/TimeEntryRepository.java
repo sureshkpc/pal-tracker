@@ -1,14 +1,14 @@
 package io.pivotal.pal.tracker;
 
+import org.springframework.context.annotation.Bean;
+
 import java.util.List;
 
 public interface TimeEntryRepository {
-    void create(TimeEntry timeEntryToCreate);
+    TimeEntry create(TimeEntry timeEntryToCreate);
     TimeEntry find(Long timeEntryId);
-
     List<TimeEntry> list();
+    TimeEntry update(Long eq, TimeEntry any);
+    void delete(Long timeEntryId);
 
-    void update(long eq, TimeEntry any);
-
-    void delete(long timeEntryId);
-}
+    }
