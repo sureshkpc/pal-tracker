@@ -1,0 +1,70 @@
+cf --helpcf login 
+
+
+
+
+cf login -a api.run.pivotal.io -u ddd@dxc. -p
+
+
+cf push pal-tracker -p /home/pal-8/workspace/pal-tracker/build/libs/pal-tracker.jar --random-route
+
+cd ~/workspace/assignment-submission
+./gradlew cloudNativeDeveloperSimpleApp -PserverUrl=https://${http://pal-tracker-noisy-wolf-si.cfapps.io/}
+
+cd ~/workspace/assignment-submission
+./gradlew cloudNativeDeveloperCloudFoundry -PserverUrl=https://pal-tracker-brash-duiker-zl.cfapps.io
+
+
+
+cf set-env WELCOME_MESSAGE "Hello from Cloud Foundry"
+
+
+
+
+pal-8@pal8-OptiPlex-7050:~/workspace/assignment-submission$ cf target
+api endpoint:   https://api.run.pivotal.io
+api version:    2.145.0
+user:           ashwin-kumars@dxc.com
+org:            DellEMC_PAL
+space:          Ashwin kumar
+pal-8@pal8-OptiPlex-7050:~/workspace/assignment-submission$ 
+
+Flyway migration:
+
+ flyway -url="jdbc:mysql://localhost:3306/tracker_dev" -locations=filesystem:databases/tracker  migrate
+
+ flyway -url="jdbc:mysql://localhost:3306/tracker_dev" -locations=filesystem:databases/tracker clean migrate
+
+Flyway clean migration:
+
+
+
+
+
+GIT TOKEN :  ae3bed8c0c991681a7f23a4f69de254a367d4c3f
+
+
+./gradlew cloudNativeDeveloperReviewPipeline -PreviewUrl=https://pal-tracker-brash-duiker-zl.cfapps.io/
+
+curl -i -XPUT -H"Content-Type: application/json" localhost:8080/time-entries/1 -d"{\"projectId\": 88, \"userId\": 99, \"date\": \"2019-01-01\", \"hours\": 9}"
+
+curl -i -XPUT -H"Content-Type: application/json" localhost:8080/time-entries/3 -d"{\"projectId\": 88, \"userId\": 88, \"date\": \"2019-01-01\", \"hours\": 12}"
+
+curl -i -XPOST -H"Content-Type: application/json" localhost:8080/time-entries -d"{\"projectId\": 22, \"userId\": 101, \"date\": \"2019-01-01\", \"hours\": 23}"
+curl -i -XPOST -H"Content-Type: application/json" localhost:8080/time-entries -d"{\"projectId\":25, \"userId\": 151, \"date\": \"2019-01-01\", \"hours\": 23}"
+curl -i -XPOST -H"Content-Type: application/json" localhost:8080/time-entries -d"{\"projectId\":25, \"userId\": 151, \"date\": \"2019-01-01\", \"hours\": 23}"
+curl -i -XPOST -H"Content-Type: application/json" localhost:8080/time-entries -d"{\"projectId\":25, \"userId\": 151, \"date\": \"2019-01-01\", \"hours\": 23}"
+
+curl -i -XDELETE -H"Content-Type: application/json" localhost:8080/time-entries/1
+
+./gradlew cloudNativeDeveloperRest -PserverUrl=https://pal-tracker-brash-duiker-zl.cfapps.io/
+
+./gradlew cloudNativeDeveloperDatabaseMigrations -PserverUrl=https://pal-tracker-quick-giraffe-ao.cfapps.io/
+
+./gradlew cloudNativeDeveloperDatabaseAccess -PserverUrl=https://pal-tracker-quick-giraffe-ao.cfapps.io/
+
+./gradlew cloudNativeDeveloperHealthMonitoring -PserverUrl=https://pal-tracker-quick-giraffe-ao.cfapps.io/actuator
+
+./gradlew cloudNativeDeveloperScaling -PserverUrl=https://pal-tracker-quick-giraffe-ao.cfapps.io/
+
+
