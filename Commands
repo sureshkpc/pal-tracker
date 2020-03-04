@@ -67,4 +67,69 @@ curl -i -XDELETE -H"Content-Type: application/json" localhost:8080/time-entries/
 
 ./gradlew cloudNativeDeveloperScaling -PserverUrl=https://pal-tracker-quick-giraffe-ao.cfapps.io/
 
+./gradlew applications:registration-server:bootRun
+
+./gradlew applications:allocations-server:bootRun
+
+./gradlew applications:timesheets-server:bootRun
+
+./gradlew applications:backlog-server:bootRun
+
+./gradlew platform-services:eureka-server:bootRun
+
+
+curl -i -XPOST -H"Content-Type: application/json" localhost:8083/registration -d'{"name": "Pete"}'
+	{"id":6,"name":"nag","info":"registration info"}
+
+curl -i localhost:8083/accounts?ownerId=6
+	{"id":4,"ownerId":6,"name":"nag's account","info":"account info"}
+
+curl -i -XPOST -H"Content-Type: application/json" localhost:8083/projects -d"{\"name\": \"Project A\", \"accountId\": \"4\"}"
+	{"id":2,"accountId":4,"name":"Project A","active":true,"info":"project info"}
+curl -i -XPOST -H"Content-Type: application/json" localhost:8083/projects -d"{\"name\": \"Project B\", \"accountId\": \"4\"}"
+	{"id":3,"accountId":4,"name":"Project B","active":true,"info":"project info"}
+
+curl -i -XPOST -H"Content-Type: application/json" localhost:8081/allocations/ -d"{\"projectId\": \"2\", \"userId\": \"6\", \"firstDay\": \"2015-05-17\", \"lastDay\": \"2015-05-18\"}"
+	{"id":2,"projectId":2,"userId":6,"firstDay":"2015-05-17","lastDay":"2015-05-18","info":"allocation info"}
+
+
+curl -i -XPOST -H"Content-Type: application/json" localhost:8081/allocations/ -d"{\"projectId\": \"3\", \"userId\": \"6\", \"firstDay\": \"2015-05-17\", \"lastDay\": \"2015-05-18\"}"
+	-sorry
+	{"id":4,"projectId":3,"userId":6,"firstDay":"2015-05-17","lastDay":"2015-05-18","info":"allocation info"}
+
+curl -i -XPOST -H"Content-Type: application/json" localhost:8081/allocations/ -d"{\"projectId\": \"2\", \"userId\": \"6\", \"firstDay\": \"2015-05-17\", \"lastDay\": \"2015-05-18\"}"
+	{"id":3,"projectId":2,"userId":6,"firstDay":"2015-05-17","lastDay":"2015-05-18","info":"allocation info"}
+
+
+
+
+curl -k "https://dell-emc-pal.login.run.pivotal.io/oauth/token" -i -u "b4b1d1ee-f741-4f66-9284-11d8bfc03cb7:e72046a9-cbb4-4416-9ca0-ecb64e8b62b4" -X POST -H 'Accept: application/json' -H 'Content-Type: application/x-www-form-urlencoded' -d 'grant_type=client_credentials&response_type=token'
+
+curl 'http://localhost:8999/oauth/token' -i -u 'tracker-client:supersecret' -X POST -H 'Accept: application/json' -H 'Content-Type: application/x-www-form-urlencoded' -d 'grant_type=client_credentials&response_type=token&token_format=opaque'
+
+
+{"access_token":"ada6d349-141e-4c98-bc44-6d356d5f7a27","token_type":"bearer","expires_in":43199,"scope":"openid"}
+
+curl localhost:8083 -H"Authorization: Bearer ada6d349-141e-4c98-bc44-6d356d5f7a27"
+
+
+curl -i -XPOST -H"Content-Type: application/json" localhost:8181/time-entries/ -d"{\"projectId\": 1, \"userId\": 1, \"date\": \"2015-05-17\", \"hours\": 6}"
+
+curl -i localhost:8084/time-entries?userId=${USER_ID}
+
+./gradlew cloudNativeDeveloperDistributedSystemWithConfigServer \
+    -PuaaUrl=https://dell-emc-pal.login.run.pivotal.io \
+    -PclientId=f3ecc280-e5e7-4626-b6b5-f2a193ed9dc5 \
+    -PclientSecret=9c7e5025-e798-4bf2-b3e5-aeb49c52b9d9 \
+    -PregistrationServerUrl=https://registration-pal-tracker-distributed-suresh.cfapps.io \
+    -PbacklogServerUrl=https://backlog-pal-tracker-distributed-suresh.cfapps.io \
+    -PallocationsServerUrl=https://allocations-pal-tracker-distributed-suresh.cfapps.io \
+    -PtimesheetsServerUrl=https://timesheets-pal-tracker-distributed-suresh.cfapps.io
+
+
+./gradlew cloudNativeDeveloperDistributedSystemWithConfigServer     -PuaaUrl=https://dell-emc-pal.login.run.pivotal.io     -PclientId=b4b1d1ee-f741-4f66-9284-11d8bfc03cb7     -PclientSecret=e72046a9-cbb4-4416-9ca0-ecb64e8b62b4     -PregistrationServerUrl=https://registration-pal-tracker-distributed-suresh.cfapps.io     -PbacklogServerUrl=https://backlog-pal-tracker-distributed-suresh.cfapps.io     -PallocationsServerUrl=https://allocations-pal-tracker-distributed-suresh.cfapps.io     -PtimesheetsServerUrl=https://timesheets-pal-tracker-distributed-suresh.cfapps.io
+
+
+
+
 
